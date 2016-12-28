@@ -3,19 +3,23 @@
 ## Build
 
 ```bash
-git checkout 7.1.x-fpm
-./bin/build 7 1 0
-git checkout 7.0.x-fpm
-./bin/build 7 0 14
+maj=7
+min=0
+pat=14
+
+./bin/build ${maj} ${min} ${pat}
 ```
 
 inspect
 
 ```bash
-docker run -i -t --rm drupal-php:7.1.0-fpm /bin/bash
+docker run -i -t --rm drupal-php:${maj}.${min}.${pat}-fpm /bin/bash
 ```
 
+push
+
 ```bash
-git commit -m '7.1.0'
-TAG=7.1.0-$(git tag -l | grep 7.1.0- | gsort -V | tail -n 1 | sed -E 's/^.*-([0-9]+)$/\1/'); echo $TAG
+git commit -m "${maj}.${min}.${pat}"
+git tag -f "${maj}.${min}.${pat}"
+git push --tags
 ```
