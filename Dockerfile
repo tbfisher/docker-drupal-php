@@ -58,7 +58,6 @@ RUN curl -fsSL https://github.com/xdebug/xdebug/archive/XDEBUG_${XDEBUG_VERSION}
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
         # sSMTP
-        # note php will be configured to send to mail:1025
         ssmtp           \
         # for drush
         mysql-client    \
