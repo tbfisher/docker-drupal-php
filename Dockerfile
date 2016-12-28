@@ -1,4 +1,4 @@
-FROM php:7.0.14-fpm
+FROM php:5.6.29-fpm
 
 MAINTAINER Brian Fisher <tbfisher@gmail.com>
 
@@ -66,6 +66,7 @@ RUN apt-get update && \
 # Configure
 COPY conf/php-fpm.ini-development /usr/local/etc/php/php.ini
 COPY conf/php-cli.ini /usr/local/etc/php/php-cli.ini
+RUN if [ ! -f /usr/local/etc/php-fpm.d/www.conf.default ]; then cp /usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf.default; fi
 COPY conf/php-fpm.d/www.conf-development /usr/local/etc/php-fpm.d/www.conf
 
 # Clean up
