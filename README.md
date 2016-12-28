@@ -9,6 +9,8 @@ git checkout 7.0.x-fpm
 ./bin/build 7 0 14
 git checkout 5.6.x-fpm
 ./bin/build 5 6 29
+git checkout 5.5.x-fpm
+./bin/build 5 5 38
 ```
 
 inspect
