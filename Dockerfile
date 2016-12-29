@@ -65,7 +65,7 @@ RUN apt-get update && \
         sudo
 
 # Configure
-COPY conf/php-fpm.ini-development /usr/local/etc/php/php.ini
+COPY conf/php.ini-development /usr/local/etc/php/php.ini
 COPY conf/php-cli.ini /usr/local/etc/php/php-cli.ini
 RUN mkdir -p /usr/local/etc/php-fpm.d && \
     cp /usr/local/etc/php-fpm.conf /usr/local/etc/php-fpm.conf.bak
