@@ -73,6 +73,7 @@ COPY conf/php-fpm.conf /usr/local/etc/php-fpm.conf
 COPY conf/php-fpm.d/www.conf-default /usr/local/etc/php-fpm.d/www.conf
 COPY conf/php-fpm.d/docker.conf /usr/local/etc/php-fpm.d/docker.conf
 COPY conf/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+COPY conf/conf.d/apc.ini /usr/local/etc/php/conf.d/docker-php-ext-apc.ini
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
