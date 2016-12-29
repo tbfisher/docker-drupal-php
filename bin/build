@@ -72,6 +72,6 @@ set +e
 # examine config
 if [[ -n "$diff" ]]; then
     $diff conf/php.ini-development-default conf/php.ini-development-full
-    $diff conf/php.ini-development conf/php-cli.ini
+    $diff conf/php.ini-development conf/php-cli.ini-development
     $diff conf/php-fpm.d/www.conf-default conf/php-fpm.d/www.conf-development
 fi

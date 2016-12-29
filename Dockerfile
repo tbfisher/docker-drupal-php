@@ -65,7 +65,7 @@ RUN apt-get update && \
 
 # Configure
 COPY conf/php.ini-development /usr/local/etc/php/php.ini
-COPY conf/php-cli.ini /usr/local/etc/php/php-cli.ini
+COPY conf/php-cli.ini-development /usr/local/etc/php/php-cli.ini
 COPY conf/php-fpm.d/www.conf-development /usr/local/etc/php-fpm.d/www.conf
 
 # Clean up
