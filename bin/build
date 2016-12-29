@@ -40,9 +40,10 @@ set -o xtrace
 
 ## Dockerfile
 
-sed -i '' -E \
-    "s/^FROM php:([0-9\.]+)-fpm$/FROM php:${v_full}-fpm/" \
-    Dockerfile
+write_version () {
+    sed -i '' -E "s/^FROM php:([0-9\.]+)-fpm$/FROM php:${v_full}-fpm/" $1
+}
+write_version Dockerfile
 
 ## Build
 
@@ -50,10 +51,15 @@ sed -i '' -E \
 curl -L https://raw.githubusercontent.com/php/php-src/php-${v_full}/php.ini-development > \
     conf/php.ini-development-default
 # write concise
-echo [PHP] > conf/php.ini-development
-diff -u conf/php.ini-development-default conf/php.ini-development-full | \
-    grep -E "^\+" | grep -v -E "^\+\+\+" | \
-    sed 's/^\+//g' >> conf/php.ini-development
+write_concise () {
+    echo [PHP] > $3
+    diff -u $1 $2 | \
+      grep -E "^\+" | grep -v -E "^\+\+\+" | \
+      sed 's/^\+//g' >> $3
+    return 0
+}
+write_concise conf/php.ini-development-default conf/php.ini-development-full \
+    conf/php.ini-development
 
 docker build $cache -f Dockerfile -t drupal-php:${v_full}-fpm .
 
