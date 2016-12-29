@@ -1,4 +1,4 @@
-FROM php:5.5.38-fpm
+FROM php:5.4.45-fpm
 
 MAINTAINER Brian Fisher <tbfisher@gmail.com>
 
@@ -15,7 +15,6 @@ RUN apt-get update && \
     docker-php-ext-install \
         gd \
         mbstring \
-        opcache \
         pdo \
         pdo_mysql \
         pdo_pgsql \
@@ -37,15 +36,17 @@ RUN apt-get update && \
         tidy \
         && \
     pecl install \
+        apc \
         imagick \
         redis \
         && \
     docker-php-ext-enable \
+        apc \
         imagick \
         redis
 
 # Xdebug
-ENV XDEBUG_VERSION='2_5_0'
+ENV XDEBUG_VERSION='2_4_1'
 RUN curl -fsSL https://github.com/xdebug/xdebug/archive/XDEBUG_${XDEBUG_VERSION}.tar.gz -o xdebug.tar.gz && \
     mkdir -p /usr/src/php/ext/xdebug && \
     tar -xf xdebug.tar.gz -C /usr/src/php/ext/xdebug --strip-components=1 && \
@@ -66,8 +67,12 @@ RUN apt-get update && \
 # Configure
 COPY conf/php-fpm.ini-development /usr/local/etc/php/php.ini
 COPY conf/php-cli.ini /usr/local/etc/php/php-cli.ini
-RUN if [ ! -f /usr/local/etc/php-fpm.d/www.conf.default ]; then cp /usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf.default; fi
-COPY conf/php-fpm.d/www.conf-development /usr/local/etc/php-fpm.d/www.conf
+RUN mkdir -p /usr/local/etc/php-fpm.d && \
+    cp /usr/local/etc/php-fpm.conf /usr/local/etc/php-fpm.conf.bak
+COPY conf/php-fpm.conf /usr/local/etc/php-fpm.conf
+COPY conf/php-fpm.d/www.conf-default /usr/local/etc/php-fpm.d/www.conf
+COPY conf/php-fpm.d/docker.conf /usr/local/etc/php-fpm.d/docker.conf
+COPY conf/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

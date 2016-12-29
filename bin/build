@@ -58,8 +58,10 @@ diff -u conf/php.ini-development-default conf/php.ini-development | \
 docker build $cache -f Dockerfile -t drupal-php:${v_full}-fpm .
 
 # post-build config
-docker run --rm drupal-php:${v_full}-fpm /bin/cat /usr/local/etc/php-fpm.d/www.conf.default > \
+docker run --rm drupal-php:${v_full}-fpm /bin/cat /usr/local/etc/php-fpm.conf.bak > \
     conf/php-fpm.d/www.conf-default
+docker run --rm drupal-php:${v_full}-fpm /bin/cat /usr/local/etc/php-fpm.conf.default > \
+    conf/php-fpm.d/www.conf-default2
 
 set +e
 
@@ -67,5 +69,7 @@ set +e
 if [[ -n "$diff" ]]; then
     $diff conf/php.ini-development-default conf/php.ini-development
     $diff conf/php-fpm.ini-development conf/php-cli.ini
-    $diff conf/php-fpm.d/www.conf-default conf/php-fpm.d/www.conf-development
+    $diff conf/php-fpm.d/www.conf-default2 conf/php-fpm.d/www.conf-development
+    $diff conf/php-fpm.d/www.conf-default conf/php-fpm.d/docker.conf
+    $diff conf/php-fpm.d/www.conf-default conf/php-fpm.d/zz-docker.conf
 fi

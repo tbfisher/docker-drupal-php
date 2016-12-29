@@ -4,8 +4,8 @@
 
 ```bash
 maj=5
-min=5
-pat=38
+min=4
+pat=45
 
 ./bin/build ${maj} ${min} ${pat}
 ```
