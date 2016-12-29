@@ -50,10 +50,10 @@ sed -i '' -E \
 curl -L https://raw.githubusercontent.com/php/php-src/php-${v_full}/php.ini-development > \
     conf/php.ini-development-default
 # write concise
-echo [PHP] > conf/php-fpm.ini-development
-diff -u conf/php.ini-development-default conf/php.ini-development | \
+echo [PHP] > conf/php.ini-development
+diff -u conf/php.ini-development-default conf/php.ini-development-full | \
     grep -E "^\+" | grep -v -E "^\+\+\+" | \
-    sed 's/^\+//g' >> conf/php-fpm.ini-development
+    sed 's/^\+//g' >> conf/php.ini-development
 
 docker build $cache -f Dockerfile -t drupal-php:${v_full}-fpm .
 
@@ -65,7 +65,7 @@ set +e
 
 # examine config
 if [[ -n "$diff" ]]; then
-    $diff conf/php.ini-development-default conf/php.ini-development
-    $diff conf/php-fpm.ini-development conf/php-cli.ini
+    $diff conf/php.ini-development-default conf/php.ini-development-full
+    $diff conf/php.ini-development conf/php-cli.ini
     $diff conf/php-fpm.d/www.conf-default conf/php-fpm.d/www.conf-development
 fi
