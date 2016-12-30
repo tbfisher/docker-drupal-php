@@ -19,7 +19,6 @@ docker run -i -t --rm drupal-php:${maj}.${min}.${pat}-fpm /bin/bash
 push
 
 ```bash
-git commit -m "${maj}.${min}.${pat}"
-git tag -f "${maj}.${min}.${pat}"
+git tag -f "${maj}.${min}.${pat}-fpm"
 git push --tags
 ```
