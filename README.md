@@ -1,5 +1,7 @@
 # PHP for Drupal
 
+Extended [PHP](https://hub.docker.com/_/php/) for [Drupal](https://www.drupal.org/) development.
+
 ## Build
 
 ```bash
