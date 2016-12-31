@@ -1,26 +1,3 @@
 # PHP for Drupal
 
-Extended [PHP](https://hub.docker.com/_/php/) for [Drupal](https://www.drupal.org/) development.
-
-## Build
-
-```bash
-maj=7
-min=0
-pat=14
-
-./bin/build ${maj} ${min} ${pat}
-```
-
-inspect
-
-```bash
-docker run -i -t --rm drupal-php:${maj}.${min}.${pat}-fpm /bin/bash
-```
-
-push
-
-```bash
-git tag -f "${maj}.${min}.${pat}-fpm"
-git push --tags
-```
+[PHP](https://hub.docker.com/_/php/) extended for [Drupal](https://www.drupal.org/) development.
