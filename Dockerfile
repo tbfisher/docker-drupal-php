@@ -45,7 +45,7 @@ RUN apt-get update && \
         redis
 
 # Xdebug
-ENV XDEBUG_VERSION='2_5_0'
+ENV XDEBUG_VERSION='2_5_1'
 RUN curl -fsSL https://github.com/xdebug/xdebug/archive/XDEBUG_${XDEBUG_VERSION}.tar.gz -o xdebug.tar.gz && \
     mkdir -p /tmp/xdebug && \
     tar -xf xdebug.tar.gz -C /tmp/xdebug --strip-components=1 && \
