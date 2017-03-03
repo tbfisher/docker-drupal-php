@@ -67,8 +67,8 @@ set +e
 
 # examine config
 if [[ -n "$diff" ]]; then
-    $diff $build/conf/php/php.ini-default           $build/conf/php/php.ini
-    $diff $build/conf/php/php.ini                   $build/conf/php/php-cli.ini
-    $diff $build/conf/php-fpm.conf.default          $build/conf/php-fpm.d/www.conf
-    $diff $build/conf/php-fpm.d/www.conf.bak        $build/conf/php-fpm.d/www.conf
+    $diff $build/conf/php/php.ini-default           $build/conf/php/php.ini         &
+    $diff $build/conf/php/php.ini                   $build/conf/php/php-cli.ini     &
+    $diff $build/conf/php-fpm.conf.default          $build/conf/php-fpm.d/www.conf  &
+    $diff $build/conf/php-fpm.d/www.conf.bak        $build/conf/php-fpm.d/www.conf  &
 fi
