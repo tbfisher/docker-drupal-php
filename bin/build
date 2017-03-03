@@ -1,0 +1,74 @@
+#!/bin/bash
+
+set -e
+
+usage() {
+    echo "Usage: $0 [-n] [-d diff] major_version minor_version patch_version build" 1>&2
+    exit 1
+}
+
+# Options
+cache=""
+while getopts ":d:n" opt; do
+  case $opt in
+    n)
+      cache=--no-cache
+      ;;
+    d)
+      diff=$OPTARG
+      ;;
+    *)
+      usage
+      ;;
+  esac
+done
+
+# Positional arguments
+version_major=${@:$OPTIND:1}
+version_minor=${@:$OPTIND+1:1}
+version_patch=${@:$OPTIND+2:1}
+if [ -z "${version_major}" ] || [ -z "${version_minor}" ] || [ -z "${version_patch}" ]; then
+    usage
+fi
+build=${@:$OPTIND+3:1}
+if [ -z $build ]; then
+    usage
+fi
+
+v_full=$version_major.$version_minor.$version_patch
+echo
+echo Building $v_full
+echo
+
+set -o xtrace
+
+## Dockerfile
+
+write_version () {
+    sed -i '' -E "s/^FROM php:([0-9\.]+)-fpm$/FROM php:${v_full}-fpm/" $1
+}
+write_version $build/Dockerfile
+
+## Build
+
+# pre-build config
+curl -L https://raw.githubusercontent.com/php/php-src/php-${v_full}/php.ini-development > \
+    $build/conf/php/php.ini-default
+
+docker build $cache -f $build/Dockerfile -t drupal-php:${v_full}-$build ./$build
+
+# # post-build config
+docker run --rm drupal-php:${v_full}-$build /bin/cat /usr/local/etc/php-fpm.conf.bak > \
+    $build/conf/php-fpm.conf.bak
+docker run --rm drupal-php:${v_full}-$build /bin/cat /usr/local/etc/php-fpm.conf.default > \
+    $build/conf/php-fpm.conf.default
+
+set +e
+
+# examine config
+if [[ -n "$diff" ]]; then
+    $diff $build/conf/php/php.ini-default           $build/conf/php/php.ini
+    $diff $build/conf/php/php.ini                   $build/conf/php/php-cli.ini
+    $diff $build/conf/php-fpm.conf.bak              $build/conf/php-fpm.conf
+    $diff $build/conf/php-fpm.conf.default          $build/conf/php-fpm.conf
+fi
