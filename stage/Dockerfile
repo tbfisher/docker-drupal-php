@@ -1,4 +1,4 @@
-FROM php:7.0.13-fpm
+FROM php:7.0.14-fpm
 
 MAINTAINER Brian Fisher <tbfisher@gmail.com>
 
