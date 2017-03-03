@@ -58,8 +58,8 @@ curl -L https://raw.githubusercontent.com/php/php-src/php-${v_full}/php.ini-deve
 docker build $cache -f $build/Dockerfile -t drupal-php:${v_full}-$build ./$build
 
 # # post-build config
-docker run --rm drupal-php:${v_full}-$build /bin/cat /usr/local/etc/php-fpm.conf.bak > \
-    $build/conf/php-fpm.conf.bak
+docker run --rm drupal-php:${v_full}-$build /bin/cat /usr/local/etc/php-fpm.d/www.conf.bak > \
+    $build/conf/php-fpm.d/www.conf.bak
 docker run --rm drupal-php:${v_full}-$build /bin/cat /usr/local/etc/php-fpm.conf.default > \
     $build/conf/php-fpm.conf.default
 
@@ -69,6 +69,6 @@ set +e
 if [[ -n "$diff" ]]; then
     $diff $build/conf/php/php.ini-default           $build/conf/php/php.ini
     $diff $build/conf/php/php.ini                   $build/conf/php/php-cli.ini
-    $diff $build/conf/php-fpm.conf.bak              $build/conf/php-fpm.conf
-    $diff $build/conf/php-fpm.conf.default          $build/conf/php-fpm.conf
+    $diff $build/conf/php-fpm.conf.default          $build/conf/php-fpm.d/www.conf
+    $diff $build/conf/php-fpm.d/www.conf.bak        $build/conf/php-fpm.d/www.conf
 fi

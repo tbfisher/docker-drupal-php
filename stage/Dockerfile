@@ -1,4 +1,4 @@
-FROM php:5.4.45-fpm
+FROM php:5.5.38-fpm
 
 MAINTAINER Brian Fisher <tbfisher@gmail.com>
 
@@ -15,6 +15,7 @@ RUN apt-get update && \
     docker-php-ext-install \
         gd \
         mbstring \
+        opcache \
         pdo_mysql \
         pdo_pgsql \
         zip
@@ -35,12 +36,10 @@ RUN apt-get update && \
         tidy \
         && \
     pecl install \
-        apc \
         imagick \
         redis \
         && \
     docker-php-ext-enable \
-        apc \
         imagick \
         redis
 
@@ -56,10 +55,8 @@ RUN apt-get update && \
 # Configure
 COPY conf/php/php.ini                   /usr/local/etc/php/php.ini
 COPY conf/php/php-cli.ini               /usr/local/etc/php/php-cli.ini
-RUN cp /usr/local/etc/php-fpm.conf      /usr/local/etc/php-fpm.conf.bak
-COPY conf/php-fpm.conf                  /usr/local/etc/php-fpm.conf
-# php module conf
-COPY conf/php/conf.d/docker-php-ext-apc.ini /usr/local/etc/php/conf.d/docker-php-ext-apc.ini
+RUN cp /usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf.bak
+COPY conf/php-fpm.d/www.conf            /usr/local/etc/php-fpm.d/www.conf
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
