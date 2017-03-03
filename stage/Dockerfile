@@ -1,4 +1,4 @@
-FROM php:5.6.24-fpm
+FROM php:5.6.25-fpm
 
 MAINTAINER Brian Fisher <tbfisher@gmail.com>
 
