@@ -1,4 +1,4 @@
-FROM php:5.6.24-fpm
+FROM php:7.0.12-fpm
 
 MAINTAINER Brian Fisher <tbfisher@gmail.com>
 
@@ -55,7 +55,6 @@ RUN apt-get update && \
 # Configure
 COPY conf/php/php.ini                   /usr/local/etc/php/php.ini
 COPY conf/php/php-cli.ini               /usr/local/etc/php/php-cli.ini
-RUN cp /usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf.bak
 COPY conf/php-fpm.d/www.conf            /usr/local/etc/php-fpm.d/www.conf
 
 # Clean up
