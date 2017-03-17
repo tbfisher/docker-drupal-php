@@ -1,7 +1,5 @@
 FROM php:5.5.38-fpm
 
-MAINTAINER Brian Fisher <tbfisher@gmail.com>
-
 # Standard drupal install.
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
