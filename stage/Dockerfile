@@ -31,6 +31,7 @@ RUN apt-get update && \
         && \
     docker-php-ext-install \
         mcrypt \
+        pcntl \
         tidy \
         && \
     pecl install \
