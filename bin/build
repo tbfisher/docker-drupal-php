@@ -1,6 +1,11 @@
 #!/bin/bash
 
-set -e
+# exit on error, unset vars
+set -eu
+# exit early for errors in pipelines
+set -o pipefail
+# debugging
+# set -x
 
 usage() {
     echo "Usage: $0 [-n] [-d diff] major_version minor_version patch_version build" 1>&2
@@ -31,13 +36,13 @@ if [ -z "${version_major}" ] || [ -z "${version_minor}" ] || [ -z "${version_pat
     usage
 fi
 build=${@:$OPTIND+3:1}
-if [ -z $build ]; then
+if [ -z "$build" ]; then
     usage
 fi
 
 v_full=$version_major.$version_minor.$version_patch
 echo
-echo Building $v_full
+echo Building "$v_full"
 echo
 
 set -o xtrace
@@ -45,30 +50,27 @@ set -o xtrace
 ## Dockerfile
 
 write_version () {
-    sed -i '' -E "s/^FROM php:([0-9\.]+)-fpm$/FROM php:${v_full}-fpm/" $1
+    sed -i '' -E "s/^FROM php:([0-9\.]+)-fpm$/FROM php:${v_full}-fpm/" "$1"
 }
-write_version $build/Dockerfile
+write_version "$build/Dockerfile"
 
 ## Build
 
 # pre-build config
-curl -L https://raw.githubusercontent.com/php/php-src/php-${v_full}/php.ini-development > \
-    $build/conf/php/php.ini-default
+curl -L "https://raw.githubusercontent.com/php/php-src/php-${v_full}/php.ini-development" > "$build/conf/php/php.ini-default"
 
-docker build $cache -f $build/Dockerfile -t drupal-php:${v_full}-$build ./$build
+docker build $cache -f "$build/Dockerfile" -t "drupal-php:${v_full}-$build" "./$build"
 
 # # post-build config
-docker run --rm drupal-php:${v_full}-$build /bin/cat /usr/local/etc/php-fpm.d/www.conf.bak > \
-    $build/conf/php-fpm.d/www.conf.bak
-docker run --rm drupal-php:${v_full}-$build /bin/cat /usr/local/etc/php-fpm.conf.default > \
-    $build/conf/php-fpm.conf.default
+docker run --rm "drupal-php:${v_full}-$build" /bin/cat /usr/local/etc/php-fpm.d/www.conf.bak > "$build/conf/php-fpm.d/www.conf.bak"
+docker run --rm "drupal-php:${v_full}-$build" /bin/cat /usr/local/etc/php-fpm.conf.default > "$build/conf/php-fpm.conf.default"
 
 set +e
 
 # examine config
 if [[ -n "$diff" ]]; then
-    $diff $build/conf/php/php.ini-default           $build/conf/php/php.ini         &
-    $diff $build/conf/php/php.ini                   $build/conf/php/php-cli.ini     &
-    $diff $build/conf/php-fpm.conf.default          $build/conf/php-fpm.d/www.conf  &
-    $diff $build/conf/php-fpm.d/www.conf.bak        $build/conf/php-fpm.d/www.conf  &
+    $diff "$build/conf/php/php.ini-default"           "$build/conf/php/php.ini"         &
+    $diff "$build/conf/php/php.ini"                   "$build/conf/php/php-cli.ini"     &
+    $diff "$build/conf/php-fpm.conf.default"          "$build/conf/php-fpm.d/www.conf"  &
+    $diff "$build/conf/php-fpm.d/www.conf.bak"        "$build/conf/php-fpm.d/www.conf"  &
 fi
