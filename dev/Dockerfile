@@ -1,4 +1,4 @@
-FROM php:7.0.19-fpm
+FROM php:7.0.20-fpm
 
 # Standard drupal install.
 RUN apt-get update && \
