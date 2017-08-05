@@ -1,4 +1,4 @@
-FROM php:7.0.21-fpm
+FROM php:7.0.22-fpm
 
 # Standard drupal install.
 RUN apt-get update && \
