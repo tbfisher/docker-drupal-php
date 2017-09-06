@@ -6,6 +6,6 @@
 
 Three builds of each minor version are provided:
 
--   dev -- with xdebug enabled, for development in protected environments. Xdebug will attempt to connect back to any request for a debugging session.
--   stage -- same as dev except no xdebug, suitable for staging sites.
+-   dev -- with xdebug.
+-   stage -- same as dev except for xdebug, suitable for staging sites.
 -   prod -- suitable for production sites.
