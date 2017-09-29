@@ -69,5 +69,8 @@ COPY conf/php-fpm.d/www.conf            /usr/local/etc/php-fpm.d/www.conf
 # php module conf
 COPY conf/php/conf.d/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
+ENV PHPFPM_LISTEN="9000"
+COPY conf/docker-entrypoint.sh /usr/local/bin/
+
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
