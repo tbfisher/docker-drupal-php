@@ -57,5 +57,8 @@ COPY conf/php/php-cli.ini               /usr/local/etc/php/php-cli.ini
 RUN cp /usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf.bak
 COPY conf/php-fpm.d/www.conf            /usr/local/etc/php-fpm.d/www.conf
 
+ENV PHPFPM_LISTEN="9000"
+COPY conf/docker-entrypoint.sh /usr/local/bin/
+
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
