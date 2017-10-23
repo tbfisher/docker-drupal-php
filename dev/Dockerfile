@@ -21,12 +21,9 @@ RUN apt-get update && \
 # Some common optional extensions.
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-        # imagick
         imagemagick \
         libmagickwand-dev \
-        # mcrypt
         libmcrypt-dev \
-        # tidy
         libtidy-dev \
         && \
     docker-php-ext-install \
@@ -55,9 +52,7 @@ RUN curl -fsSL https://github.com/xdebug/xdebug/archive/XDEBUG_${XDEBUG_VERSION}
 # Misc
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-        # sSMTP
         ssmtp           \
-        # for drush
         mysql-client    \
         sudo
 
