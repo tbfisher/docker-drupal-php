@@ -20,12 +20,9 @@ RUN apt-get update && \
 # Some common optional extensions.
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-        # imagick
         imagemagick \
         libmagickwand-dev \
-        # mcrypt
         libmcrypt-dev \
-        # tidy
         libtidy-dev \
         && \
     docker-php-ext-install \
@@ -46,9 +43,7 @@ RUN apt-get update && \
 # Misc
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-        # sSMTP
         ssmtp           \
-        # for drush
         mysql-client    \
         sudo
 
