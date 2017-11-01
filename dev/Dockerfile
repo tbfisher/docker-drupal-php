@@ -66,8 +66,12 @@ COPY conf/php-fpm.conf                  /usr/local/etc/php-fpm.conf
 COPY conf/php/conf.d/docker-php-ext-apc.ini /usr/local/etc/php/conf.d/docker-php-ext-apc.ini
 COPY conf/php/conf.d/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-ENV PHPFPM_LISTEN="9000"
-COPY conf/docker-entrypoint.sh /usr/local/bin/
+ENV PHPFPM_LISTEN="php:9000"
+ENV SSMTP_MAILHUB="mail:1025"
+ENV PHP_MEMORY_LIMIT=256M
+ENV PHP_CLI_MEMORY_LIMIT=-1
+COPY docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
+ENTRYPOINT ["docker-php-entrypoint"]
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
