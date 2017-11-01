@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+# Configurable.
+sed -i 's@%PHPFPM_LISTEN%@'"${PHPFPM_LISTEN}"'@' /usr/local/etc/php-fpm.d/www.conf
+sed -i 's@%PHP_MEMORY_LIMIT%@'"${PHP_MEMORY_LIMIT}"'@' /usr/local/etc/php/php.ini
+sed -i 's@%PHP_CLI_MEMORY_LIMIT%@'"${PHP_CLI_MEMORY_LIMIT}"'@' /usr/local/etc/php/php-cli.ini
+sed -i 's/^mailhub=.*/mailhub='"${SSMTP_MAILHUB}"'/' /etc/ssmtp/ssmtp.conf
+
+# https://github.com/docker-library/php/blob/master/7.1/docker-php-entrypoint
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- php-fpm "$@"
+fi
+
+exec "$@"
