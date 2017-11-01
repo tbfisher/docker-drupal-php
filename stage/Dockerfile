@@ -55,7 +55,7 @@ COPY conf/php-fpm.conf                  /usr/local/etc/php-fpm.conf
 # php module conf
 COPY conf/php/conf.d/docker-php-ext-apc.ini /usr/local/etc/php/conf.d/docker-php-ext-apc.ini
 
-ENV PHPFPM_LISTEN="php:9000" \
+ENV PHPFPM_LISTEN="127.0.0.1:9000" \
     PHPFPM_PM_MAX_CHILDREN=50 \
     PHPFPM_PM_START_SERVERS=2 \
     PHPFPM_PM_MIN_SPARE_SERVERS=1 \
