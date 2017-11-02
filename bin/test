@@ -15,6 +15,8 @@ OPTIONS:
 EOF
 }
 
+sleep=2
+
 # Options
 while getopts ":nd:vh" opt; do
     case $opt in
@@ -51,6 +53,7 @@ http_test_200() {
 }
 
 docker-compose up -d --build
+sleep "$sleep"
 echo testing dev:
 http_test_200 http://localhost:8080/
 echo testing stage:
