@@ -72,29 +72,23 @@ write_version() {
 write_version "$build/Dockerfile"
 
 ## Build
-
-# pre-build config
-curl -L "https://raw.githubusercontent.com/php/php-src/php-${v_full}/php.ini-development" > "$build/conf/php/php.ini-default"
-if [[ $version_major == '5' && $version_minor -lt '6' ]]; then
-  curl -L "https://raw.githubusercontent.com/docker-library/php/master/5.6/jessie/fpm/docker-php-entrypoint" > "$build/docker-php-entrypoint-default"
-else
-  curl -L "https://raw.githubusercontent.com/docker-library/php/master/$version_major.$version_minor/jessie/fpm/docker-php-entrypoint" > "$build/docker-php-entrypoint-default"
-fi
-
-# build image
 docker build $cache -f "$build/Dockerfile" -t "drupal-php:${v_full}-$build" "./$build"
 
-# # post-build config
-docker run --rm "drupal-php:${v_full}-$build" /bin/cat /usr/local/etc/php-fpm.d/www.conf.bak > "$build/conf/php-fpm.d/www.conf.bak"
-docker run --rm "drupal-php:${v_full}-$build" /bin/cat /usr/local/etc/php-fpm.conf.default > "$build/conf/php-fpm.conf.default"
+# copy default config for comparison
+mkdir -p "$build/conf-default/"{bin,etc,php-src}
+curl -LsS "https://raw.githubusercontent.com/php/php-src/php-${v_full}/php.ini-development" > "$build/conf-default/php-src/php.ini-development"
+curl -LsS "https://raw.githubusercontent.com/php/php-src/php-${v_full}/php.ini-production" > "$build/conf-default/php-src/php.ini-production"
+container_id=$(docker run -d --rm "php:${v_full}-fpm")
+docker cp "$container_id:/usr/local/etc" "$build/conf-default/"
+docker cp "$container_id:/usr/local/bin/docker-php-entrypoint" "$build/conf-default/bin/"
+docker kill "$container_id"
 
+# diff
 set +e
-
-# examine config
 if [[ -n "$diff" ]]; then
-    $diff "$build/conf/php/php.ini-default"           "$build/conf/php/php.ini"         &
-    $diff "$build/conf/php/php.ini"                   "$build/conf/php/php-cli.ini"     &
-    $diff "$build/conf/php-fpm.conf.default"          "$build/conf/php-fpm.d/www.conf"  &
-    $diff "$build/conf/php-fpm.d/www.conf.bak"        "$build/conf/php-fpm.d/www.conf"  &
-    $diff "$build/docker-php-entrypoint-default"      "$build/docker-php-entrypoint"    &
+    $diff "$build/conf-default/php-src/php.ini-development" "$build/conf/etc/php/php.ini"           &
+    $diff "$build/conf-default/php-src/php.ini-production"  "$build/conf/etc/php/php.ini"           &
+    $diff "$build/conf/etc/php/php.ini"                     "$build/conf/etc/php/php-cli.ini"       &
+    $diff "$build/conf-default/etc"                         "$build/conf/etc"                       &
+    $diff "$build/conf-default/bin/docker-php-entrypoint"   "$build/conf/bin/docker-php-entrypoint" &
 fi
