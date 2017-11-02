@@ -57,13 +57,13 @@ RUN apt-get update && \
         sudo
 
 # Configure
-COPY conf/php/php.ini                   /usr/local/etc/php/php.ini
-COPY conf/php/php-cli.ini               /usr/local/etc/php/php-cli.ini
-COPY conf/php-fpm.d/www.conf            /usr/local/etc/php-fpm.d/www.conf
+COPY conf/etc/php/php.ini                           /usr/local/etc/php/php.ini
+COPY conf/etc/php/php-cli.ini                       /usr/local/etc/php/php-cli.ini
+COPY conf/etc/php-fpm.d/zz-docker.conf              /usr/local/etc/php-fpm.d/zz-docker.conf
 # php module conf
-COPY conf/php/conf.d/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+COPY conf/etc/php/conf.d/docker-php-ext-xdebug.ini  /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-ENV PHPFPM_LISTEN="php:9000" \
+ENV PHPFPM_LISTEN="[::]:9000" \
     PHPFPM_PM_MAX_CHILDREN=50 \
     PHPFPM_PM_START_SERVERS=2 \
     PHPFPM_PM_MIN_SPARE_SERVERS=1 \
@@ -76,13 +76,22 @@ ENV PHPFPM_LISTEN="php:9000" \
     PHP_MAX_INPUT_VARS=2048 \
     PHP_POST_MAX_SIZE=64M \
     PHP_UPLOAD_MAX_FILESIZE=64M \
+    PHP_MAX_FILE_UPLOADS=50 \
     PHP_SENDMAIL_PATH="/usr/sbin/ssmtp -t" \
+    PHP_OPCACHE_ENABLE=1 \
+    PHP_OPCACHE_MEMORY_CONSUMPTION=192 \
+    PHP_OPCACHE_INTERNED_STRINGS_BUFFER=10 \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES=4096 \
+    PHP_OPCACHE_VALIDATE_TIMESTAMPS=1 \
+    PHP_OPCACHE_REVALIDATE_FREQ=0 \
+    PHP_OPCACHE_FAST_SHUTDOWN=1 \
+    PHP_CLI_OPCACHE_ENABLE_CLI=1 \
     PHP_CLI_MAX_EXECUTION_TIME=0 \
     PHP_CLI_MEMORY_LIMIT=-1 \
     PHP_CLI_REALPATH_CACHE_SIZE=4096k \
     PHP_CLI_REALPATH_CACHE_TTL=3600 \
     PHP_CLI_SENDMAIL_PATH="/usr/sbin/ssmtp -t"
-COPY docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
+COPY conf/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
