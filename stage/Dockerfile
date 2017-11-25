@@ -81,7 +81,7 @@ ENV PHPFPM_LISTEN="[::]:9000" \
     PHP_CLI_REALPATH_CACHE_SIZE=4096k \
     PHP_CLI_REALPATH_CACHE_TTL=3600 \
     PHP_CLI_SENDMAIL_PATH="/usr/sbin/ssmtp -t"
-COPY docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
+COPY conf/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 ENTRYPOINT ["docker-php-entrypoint"]
 CMD ["php-fpm"]
 
