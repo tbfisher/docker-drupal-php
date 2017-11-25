@@ -54,7 +54,7 @@ COPY conf/etc/php-fpm.conf                          /usr/local/etc/php-fpm.conf
 COPY conf/etc/php-fpm.d/docker.conf                 /usr/local/etc/php-fpm.d/docker.conf
 COPY conf/etc/php-fpm.d/zz-docker.conf              /usr/local/etc/php-fpm.d/zz-docker.conf
 
-ENV PHPFPM_LISTEN="[::]:9000" \
+ENV PHPFPM_LISTEN="9000" \
     PHPFPM_PM_MAX_CHILDREN=50 \
     PHPFPM_PM_START_SERVERS=2 \
     PHPFPM_PM_MIN_SPARE_SERVERS=1 \
@@ -74,8 +74,9 @@ ENV PHPFPM_LISTEN="[::]:9000" \
     PHP_CLI_REALPATH_CACHE_SIZE=4096k \
     PHP_CLI_REALPATH_CACHE_TTL=3600 \
     PHP_CLI_SENDMAIL_PATH="/usr/sbin/ssmtp -t"
-COPY conf/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
+COPY docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 ENTRYPOINT ["docker-php-entrypoint"]
+CMD ["php-fpm"]
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
