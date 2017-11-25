@@ -97,5 +97,9 @@ COPY conf/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 ENTRYPOINT ["docker-php-entrypoint"]
 CMD ["php-fpm"]
 
+# Change docroot
+RUN mkdir -p /var/www/web
+WORKDIR /var/www/web
+
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
