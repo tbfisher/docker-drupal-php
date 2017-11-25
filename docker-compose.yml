@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+
+  phpdev:
+    build: ./dev
+    environment:
+      PHP_MEMORY_LIMIT: 64M
+    volumes:
+      - "./test/html:/var/www/html:cached"
+
+  webdev:
+    image: tbfisher/drupal-web:nginx-1.12
+    ports:
+      - '8080:80'
+    environment:
+      WEB_DOCROOT: /var/www/html
+      WEB_PHPFPM: "phpdev:9000"
+    volumes:
+      - "./test/html:/var/www/html:cached"
+
+  phpstage:
+    build: ./stage
+    environment:
+      PHP_MEMORY_LIMIT: 64M
+    volumes:
+      - "./test/html:/var/www/html:cached"
+
+  webstage:
+    image: tbfisher/drupal-web:nginx-1.12
+    ports:
+      - '8081:80'
+    environment:
+      WEB_DOCROOT: /var/www/html
+      WEB_PHPFPM: "phpstage:9000"
+    volumes:
+      - "./test/html:/var/www/html:cached"
