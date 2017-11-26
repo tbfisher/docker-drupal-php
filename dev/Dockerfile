@@ -93,5 +93,9 @@ ENV PHPFPM_LISTEN="[::]:9000" \
     PHP_CLI_SENDMAIL_PATH="/usr/sbin/ssmtp -t"
 COPY conf/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 
+# Change docroot
+RUN mkdir -p /var/www/web
+WORKDIR /var/www/web
+
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
