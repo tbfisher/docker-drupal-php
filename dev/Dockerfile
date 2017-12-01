@@ -1,9 +1,9 @@
-FROM tbfisher/php:7.1.12-fpm
+FROM tbfisher/php:7.2.0-fpm
 
 # Standard drupal install.
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-        libpng12-dev \
+        libpng-dev \
         libjpeg-dev \
         libpq-dev \
         && \
@@ -23,11 +23,9 @@ RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
         imagemagick \
         libmagickwand-dev \
-        libmcrypt-dev \
         libtidy-dev \
         && \
     docker-php-ext-install \
-        mcrypt \
         pcntl \
         tidy \
         && \
@@ -40,7 +38,7 @@ RUN apt-get update && \
         redis
 
 # Xdebug
-ENV XDEBUG_VERSION='2_5_5'
+ENV XDEBUG_VERSION='2_5_6'
 RUN curl -fsSL https://github.com/xdebug/xdebug/archive/XDEBUG_${XDEBUG_VERSION}.tar.gz -o xdebug.tar.gz && \
     mkdir -p /usr/src/php/ext/xdebug && \
     tar -xf xdebug.tar.gz -C /usr/src/php/ext/xdebug --strip-components=1 && \
