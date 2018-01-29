@@ -38,8 +38,8 @@ RUN apt-get update && \
         redis
 
 # Xdebug
-ENV XDEBUG_VERSION='2.6.0RC2'
-RUN curl -fsSL https://github.com/xdebug/xdebug/archive/${XDEBUG_VERSION}.tar.gz -o xdebug.tar.gz && \
+ENV XDEBUG_VERSION='2.6.0'
+RUN curl -fsSL https://github.com/xdebug/xdebug/archive/XDEBUG_${XDEBUG_VERSION}.tar.gz -o xdebug.tar.gz && \
     mkdir -p /usr/src/php/ext/xdebug && \
     tar -xf xdebug.tar.gz -C /usr/src/php/ext/xdebug --strip-components=1 && \
     rm xdebug.tar.gz && \
