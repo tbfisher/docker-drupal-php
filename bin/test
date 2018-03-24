@@ -39,6 +39,7 @@ while getopts ":nd:vh" opt; do
     esac
 done
 
+# http get `<?php phpinfo()`
 http_test_200() {
   set +e
   result="$(curl -SsIL "$1")"
