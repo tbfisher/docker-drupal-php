@@ -1,4 +1,4 @@
-FROM tbfisher/php:7.2.9-fpm
+FROM tbfisher/php:7.3.0RC1-fpm
 
 # Standard drupal install.
 RUN apt-get update && \
@@ -6,6 +6,7 @@ RUN apt-get update && \
         libpng-dev \
         libjpeg-dev \
         libpq-dev \
+        libzip-dev \
         && \
     docker-php-ext-configure \
         gd --with-png-dir=/usr --with-jpeg-dir=/usr \
