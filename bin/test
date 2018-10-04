@@ -40,16 +40,18 @@ while getopts ":nd:vh" opt; do
 done
 
 http_test_200() {
-  set +e
-  result="$(curl -SsIL "$1")"
-  code=$(echo "$result" | grep '^HTTP/' | awk '{ print $2 }')
-  set -e
-  if [[ $code == '200' ]]; then
-    echo ok!
-  elif [[ "$result" ]]; then
-    echo "request to $1 failed:"
-    echo "$result"
-  fi
+    set +e
+    result="$(curl -SsIL "$1")"
+    code=$(echo "$result" | grep '^HTTP/' | awk '{ print $2 }')
+    set -e
+    if [[ $code == '200' ]]; then
+        echo http request ok!
+    elif [[ "$result" ]]; then
+        echo "http request to $1 failed:"
+        echo "$result"
+    else
+        echo http request unknown error.
+    fi
 }
 
 docker-compose up -d --build
