@@ -3,9 +3,10 @@ FROM tbfisher/php:7.1.25-fpm
 # Standard drupal install.
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-        libpng12-dev \
+        libpng-dev \
         libjpeg-dev \
         libpq-dev \
+        libzip-dev \
         && \
     docker-php-ext-configure \
         gd --with-png-dir=/usr --with-jpeg-dir=/usr \
@@ -23,11 +24,9 @@ RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
         imagemagick \
         libmagickwand-dev \
-        libmcrypt-dev \
         libtidy-dev \
         && \
     docker-php-ext-install \
-        mcrypt \
         pcntl \
         tidy \
         && \
