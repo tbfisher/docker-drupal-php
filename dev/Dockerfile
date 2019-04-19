@@ -22,9 +22,14 @@ RUN apt-get update && \
 # Some common optional extensions.
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
+        build-essential \
         imagemagick \
         libmagickwand-dev \
+        libmemcached-dev \
+        libmemcached11 \
+        libmemcachedutil2 \
         libtidy-dev \
+        libz-dev \
         && \
     docker-php-ext-install \
         pcntl \
@@ -32,10 +37,12 @@ RUN apt-get update && \
         && \
     pecl install \
         imagick \
+        memcached-2.2.0 \
         redis \
         && \
     docker-php-ext-enable \
         imagick \
+        memcached \
         redis
 
 # Xdebug
@@ -97,4 +104,4 @@ RUN mkdir -p /var/www/web
 WORKDIR /var/www/web
 
 # Clean up
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /tmp/pear
