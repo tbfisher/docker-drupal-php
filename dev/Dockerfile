@@ -57,7 +57,7 @@ RUN apt-get update && \
         sudo
 
 # Xdebug
-ENV XDEBUG_VERSION='2.7.1'
+ENV XDEBUG_VERSION='2.7.2'
 RUN curl -fsSL https://github.com/xdebug/xdebug/archive/${XDEBUG_VERSION}.tar.gz -o xdebug.tar.gz && \
     mkdir -p /usr/src/php/ext/xdebug && \
     tar -xf xdebug.tar.gz -C /usr/src/php/ext/xdebug --strip-components=1 && \
