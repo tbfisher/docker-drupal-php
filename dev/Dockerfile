@@ -45,6 +45,17 @@ RUN apt-get update && \
         memcached \
         redis
 
+# Composer
+RUN curl -sS https://getcomposer.org/installer | php --define memory_limit=-1 && \
+    mv composer.phar /usr/local/bin/composer
+
+# Misc
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install -y \
+        ssmtp           \
+        mysql-client    \
+        sudo
+
 # Xdebug
 ENV XDEBUG_VERSION='2_5_5'
 RUN curl -fsSL https://github.com/xdebug/xdebug/archive/XDEBUG_${XDEBUG_VERSION}.tar.gz -o xdebug.tar.gz && \
@@ -54,13 +65,6 @@ RUN curl -fsSL https://github.com/xdebug/xdebug/archive/XDEBUG_${XDEBUG_VERSION}
     docker-php-ext-configure xdebug && \
     docker-php-ext-install xdebug && \
     rm -r /usr/src/php/ext/xdebug
-
-# Misc
-RUN apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-        ssmtp           \
-        mysql-client    \
-        sudo
 
 # Configure
 COPY conf/etc/php/php.ini                           /usr/local/etc/php/php.ini

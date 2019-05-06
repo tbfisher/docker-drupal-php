@@ -45,6 +45,10 @@ RUN apt-get update && \
         memcached \
         redis
 
+# Composer
+RUN curl -sS https://getcomposer.org/installer | php --define memory_limit=-1 && \
+    mv composer.phar /usr/local/bin/composer
+
 # Misc
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
