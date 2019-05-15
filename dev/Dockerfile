@@ -52,6 +52,7 @@ RUN curl -sS https://getcomposer.org/installer | php --define memory_limit=-1 &&
 # Misc
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
+        git		\
         ssmtp           \
         mysql-client    \
         sudo
