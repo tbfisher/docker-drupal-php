@@ -58,11 +58,9 @@ RUN apt-get update && \
         sudo
 
 # Xdebug
-ENV XDEBUG_VERSION='2_5_5'
-RUN curl -fsSL https://github.com/xdebug/xdebug/archive/XDEBUG_${XDEBUG_VERSION}.tar.gz -o xdebug.tar.gz && \
-    mkdir -p /usr/src/php/ext/xdebug && \
-    tar -xf xdebug.tar.gz -C /usr/src/php/ext/xdebug --strip-components=1 && \
-    rm xdebug.tar.gz && \
+ENV XDEBUG_VERSION='XDEBUG_2_5_5'
+RUN mkdir -p /usr/src/php/ext/xdebug && \
+    git clone --depth 1 -b $XDEBUG_VERSION https://github.com/xdebug/xdebug /usr/src/php/ext/xdebug && \
     docker-php-ext-configure xdebug && \
     docker-php-ext-install xdebug && \
     rm -r /usr/src/php/ext/xdebug
