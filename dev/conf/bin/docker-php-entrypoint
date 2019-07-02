@@ -3,9 +3,15 @@ set -e
 
 # Write env vars to config.
 
-sed -i 's/^mailhub=.*/mailhub='"${SSMTP_MAILHUB}"'/' /etc/ssmtp/ssmtp.conf
+token_replace() {
+    # Get env value.
+    eval "val=\$$1"
+    # Escape regex chars.
+    val=$(echo "$val" | sed -e 's/[\/&]/\\&/g')
+    # shellcheck disable=2154
+    sed -i 's/%'"$1"'%/'"$val"'/' "$2"
+}
 
-# shellcheck disable=2039
 vars=(
     PHPFPM_LISTEN
     PHPFPM_PM_MAX_CHILDREN
@@ -13,14 +19,19 @@ vars=(
     PHPFPM_PM_MIN_SPARE_SERVERS
     PHPFPM_PM_MAX_SPARE_SERVERS
 )
-# shellcheck disable=2039
 for var in "${vars[@]}"; do
-    eval "val=\$$var"
-    # shellcheck disable=2154
-    sed -i 's@%'"$var"'%@'"$val"'@' /usr/local/etc/php-fpm.d/zz-docker.conf
+    token_replace $var /usr/local/etc/php-fpm.d/zz-docker.conf
 done
 
-# shellcheck disable=2039
+vars=(
+    MSMTP_HOST
+    MSMTP_PORT
+    MSMTP_FROM
+)
+for var in "${vars[@]}"; do
+    token_replace $var /etc/msmtprc
+done
+
 vars=(
     PHP_ALLOW_URL_FOPEN
     PHP_CLI_MAX_EXECUTION_TIME
@@ -46,11 +57,9 @@ vars=(
     PHP_SENDMAIL_PATH
     PHP_UPLOAD_MAX_FILESIZE
 )
-# shellcheck disable=2039
 for var in "${vars[@]}"; do
-    eval "val=\$$var"
-    sed -i 's@%'"$var"'%@'"$val"'@' /usr/local/etc/php/php.ini
-    sed -i 's@%'"$var"'%@'"$val"'@' /usr/local/etc/php/php-cli.ini
+    token_replace $var /usr/local/etc/php/php.ini
+    token_replace $var /usr/local/etc/php/php-cli.ini
 done
 
 # first arg is `-f` or `--some-option`
