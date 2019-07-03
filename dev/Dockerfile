@@ -39,7 +39,7 @@ RUN apt-get update && \
     pecl install \
         imagick \
         memcached \
-        redis \
+        redis-4.3.0 \
         && \
     docker-php-ext-enable \
         imagick \
