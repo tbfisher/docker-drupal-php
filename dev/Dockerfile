@@ -52,10 +52,21 @@ RUN curl -sS https://getcomposer.org/installer | php --define memory_limit=-1 &&
 # Misc
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-        git		          \
         msmtp-mta       \
         mariadb-client  \
         sudo
+
+# Configure
+COPY conf/etc/php/php.ini                           /usr/local/etc/php/php.ini
+COPY conf/etc/php/php-cli.ini                       /usr/local/etc/php/php-cli.ini
+COPY conf/etc/php-fpm.d/zz-docker.conf              /usr/local/etc/php-fpm.d/zz-docker.conf
+# msmtp conf
+COPY conf/etc/msmtprc                               /etc/msmtprc
+
+# Dev packages.
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get install -y \
+        git		          
 
 # Xdebug
 ENV XDEBUG_VERSION='2.7.2'
@@ -64,14 +75,6 @@ RUN mkdir -p /usr/src/php/ext/xdebug && \
     docker-php-ext-configure xdebug && \
     docker-php-ext-install xdebug && \
     rm -r /usr/src/php/ext/xdebug
-
-# Configure
-COPY conf/etc/php/php.ini                           /usr/local/etc/php/php.ini
-COPY conf/etc/php/php-cli.ini                       /usr/local/etc/php/php-cli.ini
-COPY conf/etc/php-fpm.d/zz-docker.conf              /usr/local/etc/php-fpm.d/zz-docker.conf
-# msmtp conf
-COPY conf/etc/msmtprc                               /etc/msmtprc
-# php module conf
 COPY conf/etc/php/conf.d/docker-php-ext-xdebug.ini  /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 ENV PHPFPM_LISTEN="[::]:9000" \
