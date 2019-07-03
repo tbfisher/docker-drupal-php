@@ -10,7 +10,7 @@ services:
       - "./test/html:/var/www/html:cached"
 
   webdev:
-    image: tbfisher/drupal-web:nginx-1.12
+    image: tbfisher/drupal-web:nginx-1.16-dev
     ports:
       - '8080:80'
     environment:
@@ -27,7 +27,7 @@ services:
       - "./test/html:/var/www/html:cached"
 
   webstage:
-    image: tbfisher/drupal-web:nginx-1.12
+    image: tbfisher/drupal-web:nginx-1.16-dev
     ports:
       - '8081:80'
     environment:
