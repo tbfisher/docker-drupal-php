@@ -1,4 +1,4 @@
-FROM tbfisher/php:7.4.0alpha2-fpm
+FROM tbfisher/php:7.4.0alpha3-fpm
 
 # Standard drupal install.
 RUN apt-get update && \
@@ -67,10 +67,10 @@ COPY conf/etc/msmtprc                               /etc/msmtprc
 # Dev packages.
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-        git		          
+        git
 
 # Xdebug
-ENV XDEBUG_VERSION='2.8.0alpha1'
+ENV XDEBUG_VERSION='master'
 RUN mkdir -p /usr/src/php/ext/xdebug && \
     git clone --depth 1 -b $XDEBUG_VERSION https://github.com/xdebug/xdebug /usr/src/php/ext/xdebug && \
     docker-php-ext-configure xdebug && \
