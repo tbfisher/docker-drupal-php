@@ -30,6 +30,7 @@ RUN apt-get update && \
         libmemcachedutil2 \
         libtidy-dev \
         libz-dev \
+        sqlite3 \
         && \
     docker-php-ext-install \
         pcntl \
