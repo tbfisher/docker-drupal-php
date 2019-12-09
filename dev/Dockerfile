@@ -8,6 +8,7 @@ RUN apt-get update && \
         libonig-dev \
         libpq-dev \
         libzip-dev \
+        unzip \
         && \
     docker-php-ext-configure \
         gd --with-png-dir=/usr --with-jpeg-dir=/usr \
