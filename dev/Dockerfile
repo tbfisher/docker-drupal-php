@@ -71,7 +71,7 @@ RUN apt-get update && \
         git
 
 # Xdebug
-ENV XDEBUG_VERSION='2.8.1'
+ENV XDEBUG_VERSION='2.9.0'
 RUN mkdir -p /usr/src/php/ext/xdebug && \
     git clone --depth 1 -b $XDEBUG_VERSION https://github.com/xdebug/xdebug /usr/src/php/ext/xdebug && \
     docker-php-ext-configure xdebug && \
