@@ -31,7 +31,6 @@ RUN apt-get update && \
         libmemcachedutil2 \
         libtidy-dev \
         libz-dev \
-        sqlite3 \
         && \
     docker-php-ext-install \
         pcntl \
@@ -68,7 +67,8 @@ COPY conf/etc/msmtprc                               /etc/msmtprc
 # Dev packages.
 RUN apt-get update && \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-        git		          
+        git \
+        sqlite3
 
 # Xdebug
 ENV XDEBUG_VERSION='XDEBUG_2_5_5'
