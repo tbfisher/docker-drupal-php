@@ -11,7 +11,7 @@ RUN apt-get update && \
         unzip \
         && \
     docker-php-ext-configure \
-        gd --with-png-dir=/usr --with-jpeg-dir=/usr \
+        gd --with-jpeg \
         && \
     docker-php-ext-install \
         gd \
