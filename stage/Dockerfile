@@ -1,4 +1,4 @@
-FROM tbfisher/php:7.4.2-fpm
+FROM tbfisher/php:7.4.3-fpm
 
 # Standard drupal install.
 RUN apt-get update && \
